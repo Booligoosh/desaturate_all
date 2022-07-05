@@ -1,0 +1,1 @@
+- To compile schema, run `glib-compile-schemas ./schemas`

@@ -11,7 +11,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-'use strict';
+"use strict";
 
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
@@ -25,58 +25,41 @@ let extension_icon;
 let color_effect;
 
 const Keybindings = {
-    SchemaId: 'org.gnome.shell.extensions.desaturate-all.keybindings',
-    Keys: {TOGGLE: 'toggle'},
-    enable: () => {
-        const settings = ExtensionUtils.getSettings(Keybindings.SchemaId);
+  SchemaId: "org.gnome.shell.extensions.desaturate-all.keybindings",
+  Keys: { TOGGLE: "toggle" },
+  enable: () => {
+    const settings = ExtensionUtils.getSettings(Keybindings.SchemaId);
 
-        Main.wm.addKeybinding(
-            Keybindings.Keys.TOGGLE,
-            settings,
-            Meta.KeyBindingFlags.NONE,
-            Shell.ActionMode.ALL,
-            _toggleEffect
-        );
-    },
-    disable: () => {
-        Main.wm.removeKeybinding(Keybindings.Keys.TOGGLE);
-    }
+    Main.wm.addKeybinding(
+      Keybindings.Keys.TOGGLE,
+      settings,
+      Meta.KeyBindingFlags.NONE,
+      Shell.ActionMode.ALL,
+      _toggleEffect
+    );
+  },
+  disable: () => {
+    Main.wm.removeKeybinding(Keybindings.Keys.TOGGLE);
+  },
 };
 
 function _toggleEffect() {
-    if ( Main.uiGroup.has_effects( color_effect ) ) {
-        Main.uiGroup.remove_effect( color_effect );
-    } else {
-        Main.uiGroup.add_effect( color_effect );
-    }
+  if (Main.uiGroup.has_effects(color_effect)) {
+    Main.uiGroup.remove_effect(color_effect);
+  } else {
+    Main.uiGroup.add_effect(color_effect);
+  }
 }
 
-
 function init() {
-    //Creation of button
-    button = new St.Bin({ style_class: 'panel-button',
-                          reactive: true,
-                          can_focus: true,
-                          x_fill: true,
-                          y_fill: false,
-                          track_hover: true });
-    extension_icon = new St.Icon({ icon_name: 'applications-graphics-symbolic',
-                                   style_class: 'system-status-icon' });
-    button.set_child(extension_icon);
-
-    //Creation of effect
-    color_effect = new Clutter.DesaturateEffect();
-    
-    //Signal connection
-    button.connect('button-press-event', _toggleEffect);
+  //Creation of effect
+  color_effect = new Clutter.DesaturateEffect();
 }
 
 function enable() {
-    Main.panel._rightBox.insert_child_at_index(button, 0);
-    Keybindings.enable();
+  Keybindings.enable();
 }
 
 function disable() {
-    Main.panel._rightBox.remove_child(button);
-    Keybindings.disable();
+  Keybindings.disable();
 }
